@@ -1,4 +1,5 @@
-import csv, random
+import csv
+from random import randint
 
 ifile = open('small_jeopardy.csv', 'rb')
 reader = csv.reader(ifile)
@@ -27,8 +28,15 @@ for i in range(len(CATEGORIES)):
 	else:
 		cat_dict[CATEGORIES[i]] = [q_and_a[i]] # create new category entry
 
-print cat_dict.keys()
-# TODO: reverse engineer so each q/a tuple has a corresponding category as well?
+rand_cat = CATEGORIES[randint(0, len(CATEGORIES)-1)]
+
+cat_questions = cat_dict.get(rand_cat)
+print rand_cat
+print cat_questions
+
+if len(cat_questions) > 1:
+	print cat_questions[randint(0, len(cat_questions)-1)]
+
 
 # tbh idk if i need this anymore?
 questions_dict = {} # a dictionary of all our question/answer pairs
