@@ -91,6 +91,7 @@ class Game(object):
 		print "-" * 10
 		guess = raw_input(" WHO/WHAT IS: ")
 
+
 		return question.check_ans(guess.upper())
 
 

@@ -48,17 +48,14 @@ def category_list(num_cats):
 	return cat_list
 
 
+# keep these around for simple play
 def random_category():
 	# picks a random category
 	return CATEGORIES[randint(0, len(CATEGORIES)-1)] 
 
 
-# TODO: i can probably move this into the game module/class?
 def random_question(category):
 	# gets any/all question(s) associated with the random category chosen
-	# if len(category) == 0:
-	# 	return None
-
 	cat_questions = CAT_DICT.get(category) 
 	
 	# if there's more than one question... 

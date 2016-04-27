@@ -20,12 +20,10 @@ classes:
 	category list
 
 
-so for getting the categories --
-	we're going to need a list of both categories, and questions
-	and remember to pop the question once it's answered
-
 TODOS:
 	X check for length of category and handle removing empty categories
 	X make sure our category choices are UNIQUE!
-	- let's make an ENGINE class/module to handle running games?
-	- Build PARSER for handling skip words in answers
+	X let's make an ENGINE class/module to handle running games?
+	- Build PARSER for handling skip words in answers / dealing with parentheticals etc
+	- add something like "continue game" vs "start new game" ?
+	- add "eternal game" function, so it adds new categories as we deplete them?
