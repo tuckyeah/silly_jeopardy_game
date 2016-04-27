@@ -1,6 +1,9 @@
 import csv
 from random import randint
 
+# once we start using bigger files, we'll have to pick a certain number of questions
+# and categories to store, and only pull those...
+
 ifile = open('small_jeopardy.csv', 'rb')
 reader = csv.reader(ifile)
 listData = list(reader)
@@ -8,7 +11,7 @@ listData = list(reader)
 QUESTIONS = []
 ANSWERS = []
 CATEGORIES = []
-
+# MAX_ROWS = 0
 
 for row in listData:
 	if listData.index(row) == 0:
@@ -19,7 +22,7 @@ for row in listData:
 	CATEGORIES.append(listData[listData.index(row)][0]) # all categories
 
 
-cat_dict = dict() # dictionary of categories and q/a tuples
+cat_dict = dict() # creates dictionary of ALL categories and q/a tuples
 q_and_a = zip(QUESTIONS, ANSWERS) # creates tuples of questions and answers
 
 for i in range(len(CATEGORIES)):
@@ -28,19 +31,26 @@ for i in range(len(CATEGORIES)):
 	else:
 		cat_dict[CATEGORIES[i]] = [q_and_a[i]] # create new category entry
 
-rand_cat = CATEGORIES[randint(0, len(CATEGORIES)-1)]
 
-cat_questions = cat_dict.get(rand_cat)
-print rand_cat
-print cat_questions
-
-if len(cat_questions) > 1:
-	print cat_questions[randint(0, len(cat_questions)-1)]
+def random_category():
+	# picks a random category
+	return CATEGORIES[randint(0, len(CATEGORIES)-1)] 
 
 
-# tbh idk if i need this anymore?
-questions_dict = {} # a dictionary of all our question/answer pairs
+def random_question(category):
+	# gets any/all question(s) associated with the random category chosen
+	cat_questions = cat_dict.get(category) 
+	
+	# if there's more than one question... 
+	if len(cat_questions) > 1: 
+		return cat_questions[randint(0, len(cat_questions)-1)] # pick a random question from that array
+	else:
+		return cat_questions[0]
 
-for question, answer in q_and_a:
-	questions_dict[question] = answer
 
+
+# TESTING STUFF:
+# rand_cat = random_category() # picks a random category
+
+# print "Category: " + rand_cat 
+# print random_question(rand_cat)

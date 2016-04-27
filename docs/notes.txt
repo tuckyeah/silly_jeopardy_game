@@ -1,0 +1,21 @@
+Game notes:
+
+- list 5 random categories from the dictionary
+- player picks category
+- pick random question from that category and ask player
+- if the player is correct: reward $$$ points (eventally)
+		for now, print "correct" and move on
+- if the player is wrong: -200 points (eventually)
+		for now, print "Wrong" and move on
+- ask categories again
+
+classes: 
+	dictionary (module)
+	player
+	game
+	category
+	question / answer
+	parser (?))
+
+	question/answer list
+	category list
