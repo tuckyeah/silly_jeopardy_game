@@ -32,6 +32,7 @@ for i in range(len(CATEGORIES)):
 		cat_dict[CATEGORIES[i]] = [q_and_a[i]] # create new category entry
 
 
+
 def random_category():
 	# picks a random category
 	return CATEGORIES[randint(0, len(CATEGORIES)-1)] 
