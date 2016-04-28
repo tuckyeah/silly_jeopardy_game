@@ -12,7 +12,17 @@ def test_category_list():
 	for i in result:
 		assert(type(i) is str and len(i) > 0)
 
-dict_obj = Dictionary()
+def test_random_category():
+	one_list = random_category()
+	other_list = random_category()
 
-def test_dict_obj_size():
-	assert_equal(dict_obj.num_cats, 5)
+	assert(one_list != other_list)
+	assert(len(one_list) > 0)
+
+
+def test_value_dictionary():
+	pass
+
+def test_random_question():
+	pass
+	

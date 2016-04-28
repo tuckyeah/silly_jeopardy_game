@@ -1,4 +1,5 @@
 import csv
+import re
 from random import randint
 
 # once we start using bigger files, we'll have to pick a certain number of questions
@@ -11,23 +12,27 @@ listData = list(reader)
 QUESTIONS = []
 ANSWERS = []
 CATEGORIES = []
+VALUES = []
 MAX_CATS = 5
 
 # Get categories, questions, answers from spreadsheet
 for row in listData:
-	if listData.index(row) == 0:
+
+	#skip header row and any result with a link in it links
+	if listData.index(row) == 0 or re.search("href", str(listData[listData.index(row)])):
 		continue
-
-	# i'm not sure how to randomize these selections - i keep getting errors
-	# that the int isn't in the list range?
-
+	
+	CATEGORIES.append(listData[listData.index(row)][0]) # all categories
+	VALUES.append(listData[listData.index(row)][1]) # Dollar Amounts
 	QUESTIONS.append(listData[listData.index(row)][2]) # all questions
 	ANSWERS.append(listData[listData.index(row)][3]) # all answers
-	CATEGORIES.append(listData[listData.index(row)][0]) # all categories
 
+
+# DICTIONARY BUILDING
 
 CAT_DICT = dict() # creates dictionary of ALL categories (with qa tuples assigned below)
 q_and_a = zip(QUESTIONS, ANSWERS) # creates tuples of questions and answers
+
 
 for i in range(len(CATEGORIES)):
 	if CATEGORIES[i] in CAT_DICT: # if cat already exists, add qa tuple
@@ -35,11 +40,21 @@ for i in range(len(CATEGORIES)):
 	else:
 		CAT_DICT[CATEGORIES[i]] = [q_and_a[i]] # create new category entry
 
-# TODO: Make a class 'Dictionary' that gets a set number of categories
-# / QAs from the library and does basically all the things listed outside the class currently
+QUESTION_VALS = dict() # dictionary of values mapped to qa_tuples (keys) 
 
-# then make one method that makes and returns a Dictionary object.
+for i in range(len(q_and_a)):
+	QUESTION_VALS[q_and_a[i]] = VALUES[i]
 
+
+# inverse, qa tuples (vals) mapped to vals (keys)
+# so we can look up questions by numbers ?
+VAL_DICT = {val: qa for qa, val in QUESTION_VALS.items()} 
+
+print VAL_DICT.keys()
+
+# Dictionary Class: creates a list of randomly selected
+# categories and their questions? Now idk if I need this...
+# 	should this just get like 100 categories or something?
 class Dictionary(object):
 
 	def __init__(self, total_cats=False):
@@ -77,25 +92,6 @@ class Dictionary(object):
 
 
 
-dict_obj = Dictionary()
-
-print "\nLIST OF CATEGORIES \n"
-print "-" * 150
-print dict_obj.cat_list
-print "-" * 150
-
-print "\nLENGTHS \n\n"
-
-rand_cat = dict_obj.get_random_category()
-
-print "CATEGORY NAME /"
-print rand_cat
-print "\nNUM QUESTIONS /"
-print len(rand_cat)
-
-
-
-
 def category_list(num_cats=False):
 	# returns a list of randomly chosen categories from all categories
 	cat_list = set([]) # 'set' makes sure we only have unique values
@@ -127,6 +123,15 @@ def random_question(category):
 
 
 # TESTING STUFF:
+# TESTING
+
+# for n in range(1, 6):
+# 	print "QA TUPLE:"
+# 	qa = q_and_a[randint(0, len(q_and_a)-1)]
+# 	print qa
+# 	print "VALUE: "
+# 	print val_dict.get(qa)
+
 # rand_cat = random_category() # picks a random category
 
 # print "Category: " + rand_cat 

@@ -3,7 +3,13 @@ from random import randint
 from sys import exit
 
 
+STOP_WORDS = ["THE", "A", "AN"]
+JOINER_WORDS = ["OR"]
+
+
 class Question(object):
+	# returns the category, question, and answer.
+	# also contains the function 'check_ans' to validate guess
 
 	def __init__(self, cat, qa):
 		self.cat = cat
@@ -12,7 +18,19 @@ class Question(object):
 
 	def check_ans(self, guess):
 		# returns boolean
-		return guess.upper() == self.ans
+		return (guess.upper() == self.parse_answer(self.ans)) or (guess.upper() == self.ans)
+
+	def parse_answer(self, ans):
+		#ignores any stop words in the answer
+		# need to refactor to worry about parentheticals, and joiner words
+		ans_arr = ans.split()
+
+		if len(ans_arr) > 1:
+			for i in ans_arr:
+				if i in STOP_WORDS:
+					ans_arr.pop(ans_arr.index(i))
+
+		return " ".join(ans_arr)
 
 
 
@@ -25,11 +43,12 @@ class Game(object):
 	# 		remove it from the cat list and don't offer it anymore
 	#	keep track of questions asked? instead of popping them?
 
-	def __init__(self):
+	def __init__(self, player_name):
 		self.max_cats = 5
 		self.cat_list = list(dictionary.category_list(self.max_cats))
 		self.questions_asked = []
 		self.empty_categories = []
+		self.name = player_name
 		
 
 	def list_categories(self):
@@ -46,6 +65,19 @@ class Game(object):
 		print "\n"
 		choice = raw_input("CATEGORY (1-5): ")
 
+		try:
+			choice = int(choice)
+
+			try:
+				self.cat_list[int(choice)-1]
+			except IndexError:
+				print "Please enter a number from 1-5."
+				choice = raw_input("CATEGORY (1-5): ")
+
+		except ValueError:
+			print "Please enter a number from 1-5."
+			choice = raw_input("CATEGORY (1-5): ")
+		
 		return self.cat_list[int(choice)-1]
 
 
@@ -60,6 +92,7 @@ class Game(object):
 		else:
 			ques = cat_questions.pop(0)
 			self.remove_empty_cats(cat)
+			self.empty_categories.append(cat)
 
 		return ques
 
@@ -77,32 +110,43 @@ class Game(object):
 
 
 	def ask_question(self):
-		question = self.new_question()
+		self.question = self.new_question()
 
 		# prints out question
-		print "Okay PLAYER, the category is: \n"
-		print "%s\n" % question.cat
-		print "-" * 10
+		print "\nOkay %s, the category is: \n" % self.name
+		print "%s\n" % self.question.cat
+		print "-" * 25
 		print "CLUE:"
-		print "-" * 10
-		print question.q
-		print "-" * 10
-		print "(answer: %s )" % question.ans
-		print "-" * 10
+		print "-" * 25
+		print self.question.q
+		print "-" * 25
+		print "(answer: %s )" % self.question.ans
+		print "-" * 25
 		guess = raw_input(" WHO/WHAT IS: ")
 
+		return self.question.check_ans(guess.upper())
 
-		return question.check_ans(guess.upper())
+
+	def add_category(self):
+		#keep populating category list, so we can play foreverrrr
+
+		if self.cat_list < self.max_cats:
+			self.cat_list.push(dictionary.random_category())
+
 
 
 class Player(object):
 
-	def __init__(self, name):
-		self.name = name
+	def __init__(self):
 		self.rounds_played = 0
 		self.score = 0
+		self.name = ""
 
 
+	def get_name(self):
+		print "Okay, player, what should I call you?"
+		name = raw_input("NAME > ")
+		self.name = name
 
 # GETTER FUNCTIONS
 
@@ -148,18 +192,25 @@ def new_question():
 
 
 while True:
-	
-	play = Game()
+
+	player = Player()
+	player.get_name()
+	play = Game(player.name)
 	
 	while len(play.cat_list) > 0:
 
 		if not play.ask_question():
-			print "Oh no! That doesn't appear to the be the correct answer."
-			break
-
-		if not play_again():
-			print "Goodbye"
-			exit(0)
+			print "\nOh no! That doesn't appear to the be the correct answer."
+			print "The answer was: %s" % play.question.ans
+		
+			if not play_again():
+				print "Goodbye"
+				exit(0)
+			else:
+				break
+		else:
+			print "\nThat's correct, great work!\n"
+			print "-" * 10
 
 
 
