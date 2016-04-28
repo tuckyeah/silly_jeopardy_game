@@ -27,3 +27,5 @@ TODOS:
 	- Build PARSER for handling skip words in answers / dealing with parentheticals etc
 	- add something like "continue game" vs "start new game" ?
 	- add "eternal game" function, so it adds new categories as we deplete them?
+
+	- write a program that scans the jeopardy.csv and removes any questions with URLs in them (regex)

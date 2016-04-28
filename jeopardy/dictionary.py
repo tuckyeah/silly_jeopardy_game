@@ -35,11 +35,72 @@ for i in range(len(CATEGORIES)):
 	else:
 		CAT_DICT[CATEGORIES[i]] = [q_and_a[i]] # create new category entry
 
+# TODO: Make a class 'Dictionary' that gets a set number of categories
+# / QAs from the library and does basically all the things listed outside the class currently
+
+# then make one method that makes and returns a Dictionary object.
+
+class Dictionary(object):
+
+	def __init__(self, total_cats=False):
+
+		if total_cats:
+			self.cat_num = total_cats
+		else:
+			self.cat_num = MAX_CATS
+
+		self.cat_list =  list(self.get_category_list()) # makes set a list
 
 
-def category_list(num_cats):
+	def get_category_list(self):
+		# returns list of randomly chosen categories from library
+		temp_list = set([]) # makes sure they're only unique
+
+		while len(temp_list) < self.cat_num:
+			temp_list.add(CATEGORIES[randint(0, len(CATEGORIES)-1)])
+
+		return temp_list
+
+
+	def get_random_category(self):
+		# returns random category
+		return CATEGORIES[randint(0, len(CATEGORIES)-1)]
+
+
+	def get_cat_questions(self, cat=False):
+		if cat:
+			category = cat
+		else:
+			category = self.get_random_category()
+
+		return CAT_DICT.get(category)
+
+
+
+dict_obj = Dictionary()
+
+print "\nLIST OF CATEGORIES \n"
+print "-" * 150
+print dict_obj.cat_list
+print "-" * 150
+
+print "\nLENGTHS \n\n"
+
+rand_cat = dict_obj.get_random_category()
+
+print "CATEGORY NAME /"
+print rand_cat
+print "\nNUM QUESTIONS /"
+print len(rand_cat)
+
+
+
+
+def category_list(num_cats=False):
 	# returns a list of randomly chosen categories from all categories
 	cat_list = set([]) # 'set' makes sure we only have unique values
+	if not num_cats:
+		num_cats = MAX_CATS
 
 	while len(cat_list) < num_cats:
 		num = randint(0, len(CATEGORIES)-1)
