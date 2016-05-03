@@ -78,7 +78,22 @@ class Game(object):
 			print "Please enter a number from 1-5."
 			choice = raw_input("CATEGORY (1-5): ")
 		
+		cat = self.cat_list[int(choice)-1]
+		self.get_cat_values(cat)
+
 		return self.cat_list[int(choice)-1]
+
+
+	def get_cat_values(self, cat):
+		question_list = dictionary.CAT_DICT.get(cat)
+		self.ques_dict = dict()
+
+		for question in question_list:
+			self.ques_dict[dictionary.QUESTION_VALS.get(question)] = question
+
+		for i in self.ques_dict:
+			print i + "\n"
+
 
 
 	def gen_rand_question(self, cat):
@@ -148,30 +163,17 @@ class Player(object):
 		name = raw_input("NAME > ")
 		self.name = name
 
+	def convert_score(self, num):
+		#converts score to value that we can then add to the score
+		res = num.lstrip("$").replace(",", "")
+
+		return int(res)
+
+
 # GETTER FUNCTIONS
 
 
-# get input from dictionary.py
-
-def get_question(cat): 
-	# gets random question() from dictionary.py
-	return dictionary.random_question(cat)
-
-def get_rand_category(): 
-	# gets random_category() from dictionary.py
-	return dictionary.random_category()
-
-
-def get_cat_list():
-	# gets a list of categories
-	return dictionary.category_list()
-
-
 # get player input
-
-def get_player_guess():
-	guess = raw_input("   WHAT/WHO IS >>> ")
-	return guess
 
 def play_again():
 	ask = raw_input("Play again? (y/n): ")

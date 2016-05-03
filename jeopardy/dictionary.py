@@ -27,6 +27,7 @@ for row in listData:
 	QUESTIONS.append(listData[listData.index(row)][2]) # all questions
 	ANSWERS.append(listData[listData.index(row)][3]) # all answers
 
+VALUES = [x.strip(' ') for x in VALUES] #removes any whitespace
 
 # DICTIONARY BUILDING
 
@@ -40,6 +41,9 @@ for i in range(len(CATEGORIES)):
 	else:
 		CAT_DICT[CATEGORIES[i]] = [q_and_a[i]] # create new category entry
 
+
+
+
 QUESTION_VALS = dict() # dictionary of values mapped to qa_tuples (keys) 
 
 for i in range(len(q_and_a)):
@@ -50,7 +54,6 @@ for i in range(len(q_and_a)):
 # so we can look up questions by numbers ?
 VAL_DICT = {val: qa for qa, val in QUESTION_VALS.items()} 
 
-print VAL_DICT.keys()
 
 # Dictionary Class: creates a list of randomly selected
 # categories and their questions? Now idk if I need this...
@@ -90,19 +93,37 @@ class Dictionary(object):
 
 		return CAT_DICT.get(category)
 
+# for dealing with values
+# player picks category, get the questions associated with that category 
+# and list their values.
+# 	(this will replace random_question())
+# player picks value, get question?
+
+def return_keys():
+	# this is most used for testing purposes, just returns array of values
+	return VAL_DICT.keys()
 
 
-def category_list(num_cats=False):
-	# returns a list of randomly chosen categories from all categories
-	cat_list = set([]) # 'set' makes sure we only have unique values
-	if not num_cats:
+def convert_value(num):
+	# converts value to an int
+	# this should probably be somewhere else... like the "player" class?
+	res = num.lstrip("$").replace(",", "")
+	res = int(res)
+
+	return res
+
+
+def category_list(num_cats=None):
+	# generates list of categories
+	temp_list = set([])
+
+	if num_cats == None:
 		num_cats = MAX_CATS
 
-	while len(cat_list) < num_cats:
-		num = randint(0, len(CATEGORIES)-1)
-		cat_list.add(CATEGORIES[num])
+	while len(temp_list) < num_cats:
+		temp_list.add(CATEGORIES[randint(0, len(CATEGORIES)-1)])
 
-	return cat_list
+	return temp_list
 
 
 # keep these around for simple play

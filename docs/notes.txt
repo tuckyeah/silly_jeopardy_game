@@ -19,6 +19,7 @@ classes:
 	question/answer list
 	category list
 
+Write out a flowchart of how this game CURRENTLY works.
 
 TODOS:
 	X check for length of category and handle removing empty categories
@@ -28,5 +29,6 @@ TODOS:
 	- Add handling parentheticals in answers
 	- add something like "continue game" vs "start new game" ?
 	- add "eternal game" function, so it adds new categories as we deplete them?
+	- starting listing and adding scores
 
 	X write a program that scans the jeopardy.csv and removes any questions with URLs in them (regex) (well sort of complete)
